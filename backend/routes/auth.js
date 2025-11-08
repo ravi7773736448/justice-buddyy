@@ -3,7 +3,6 @@ const router = express.Router();
 const Admin = require('../models/Admin');
 const jwt = require('jsonwebtoken');
 const { protect } = require('../middleware/authMiddleware');
-const adminSdk = require('firebase-admin'); // Firebase Admin SDK
 
 // JWT generator
 const generateToken = (id) => {
@@ -57,31 +56,4 @@ router.get('/dashboard', protect, (req, res) => {
   res.json({ message: `Welcome Admin ${req.admin.username}` });
 });
 
-// =====================
-// GOOGLE LOGIN
-// =====================
-router.post('/google-login', async (req, res) => {
-  try {
-    const { token } = req.body;
-    if (!token) return res.status(400).json({ success: false, message: 'Token missing' });
-
-    // Verify Firebase ID token
-    const decodedToken = await adminSdk.auth().verifyIdToken(token);
-    const { uid, email, name } = decodedToken;
-
-    // Check if admin exists
-    let adminUser = await Admin.findOne({ username: email });
-    if (!adminUser) {
-      adminUser = await Admin.create({ username: email, password: 'google-oauth' });
-    }
-
-    // Generate backend JWT
-    const appToken = generateToken(adminUser._id);
-
-    res.json({ success: true, token: appToken, admin: { username: email, name, uid } });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: 'Google login failed', error: err.message });
-  }
-});
 module.exports = router;
