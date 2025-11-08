@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+const BACKEND_URL = "https://justice-buddyy-1.onrender.com";
 
 const AdminDashboard = () => {
   const [adminData, setAdminData] = useState(null);
