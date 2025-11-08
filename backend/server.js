@@ -17,7 +17,7 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:5000", "http://localhost:5173" ,  "http://localhost:5174"  , "https://justice-buddy-frontend.vercel.app"], // React frontend
+    origin: ["http://localhost:5000", "http://localhost:5173" ,  "http://localhost:5174"  , "https://justice-buddyai.vercel.app/"], // React frontend
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
